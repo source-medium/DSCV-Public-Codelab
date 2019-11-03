@@ -1,0 +1,28 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-10-17T18:31:12Z",
+  "id": "DSCV-Local-dev",
+  "duration": 85,
+  "title": "Data Studio Community Visualizations - Local Development Guide",
+  "authors": "Ralph Spandl",
+  "summary": "In this codelab, you will learn how to setup your local development environment to create Community Visualizations for the Google Data Studio",
+  "source": "15RyRtuzxqAovtFCGyv7mQGpME0_Sxkv4jJIfqNtVDRs",
+  "theme": "cloud",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "Cloud"
+  ],
+  "tags": [
+    "community visualizations",
+    "data studio",
+    "local development"
+  ],
+  "feedback": "https://github.com/spandl/DSCV-Public/issues",
+  "ga": "UA-5909238-5",
+  "url": "DSCV-Local-dev"
+}

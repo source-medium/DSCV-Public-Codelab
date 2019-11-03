@@ -1,0 +1,434 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Data Studio Community Visualizations - Local Development Guide</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-5909238-5"
+                  id="DSCV-Local-dev"
+                  title="Data Studio Community Visualizations - Local Development Guide"
+                  environment="web"
+                  feedback-link="https://github.com/spandl/DSCV-Public/issues">
+    
+      <google-codelab-step label="Introduction" duration="20">
+        <p><strong>Last Updated:</strong> 2019-08-12</p>
+<h2 is-upgraded><strong>Developing Data Studio Community Visualizations locally</strong></h2>
+<p>Data Studio Community Visualizations allow you to build and use your own custom visualizations in Data Studio. Throughout this document, we will call them &#34;components&#34;.</p>
+<p>This codelab will walk you through one configuration of a local development environment. <a href="https://developers.google.com/datastudio/visualization/" target="_blank">Review the documentation to learn more about Community Visualizations.</a></p>
+<h2 is-upgraded><strong>Prerequisites</strong></h2>
+<p><a href="https://codelabs.developers.google.com/codelabs/community-visualization/#0" target="_blank">This codelab assumes that you have completed the &#34;Get Started&#34; codelab</a>.</p>
+<p>You should also watch the following videos before starting this codelab.</p>
+<h3 is-upgraded><strong>Introduction to Community Components</strong></h3>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/DwLgeudiCoE?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<h3 is-upgraded><strong>Community Visualizations: Developer Tooling Quickstart</strong></h3>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/jy4Dj20NHsU?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<h3 is-upgraded><strong>Community Visualizations: Converting Existing Visualizations</strong></h3>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/A6BCfqrw_EA?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<aside class="warning"><p><strong>Note:</strong> This codelab focuses on the connection to Data Studio and a local development setup. The d3.js visualization code and the webpack web bundling setup will not be discussed.</p>
+</aside>
+<h2 class="checklist" is-upgraded><strong>What you&#39;ll learn</strong></h2>
+<ul class="checklist">
+<li>How to create sample datasets for local development using the <strong>getdata</strong> component</li>
+<li>Setting up the visualization to work in your local environment and in Data Studio.</li>
+</ul>
+<h2 is-upgraded><strong>What you&#39;ll need</strong></h2>
+<ul>
+<li><a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a> (or any IDE) </li>
+<li>Knowledge of JavaScript, <a href="https://pugjs.org" target="_blank">Pug (HTML)</a>, <a href="https://sass-lang.com/" target="_blank">SASS (CSS)</a>, <a href="https://webpack.js.org/" target="_blank">webpack</a> </li>
+<li>Familiarity with <a href="https://d3js.org/" target="_blank"> d3.js</a></li>
+<li>Access to a <a href="https://cloud.google.com/storage/" target="_blank">Google Cloud Storage</a> bucket </li>
+<li>Access to <a href="https://datastudio.google.com/navigation/reporting" target="_blank">Google Data Studio</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Setting up your local environment" duration="10">
+        <h2 is-upgraded><strong>Setup</strong></h2>
+<ol type="1" start="1">
+<li><a href="https://www.npmjs.com/get-npm" target="_blank">Install node.js</a> if you don&#39;t already have it</li>
+<li>Download the <a href="https://github.com/googledatastudio/experimental-visualizations/tree/master/viz/sunburst-drilldown" target="_blank">source code</a></li>
+<li>In your terminal, navigate to the root folder and run <code>npm install</code></li>
+</ol>
+<h2 is-upgraded><strong>Source Code</strong></h2>
+<p>The source code in the repo contains two components:</p>
+<ul>
+<li><strong>Get Data</strong>: A helper component that allows you to easily download test data sets</li>
+<li><strong>Sunburst Diagram</strong>: The actual component that we want to use in our Data Studio report.</li>
+</ul>
+<p>Both components can be found in the same repo:</p>
+<aside class="special"><p><a href="https://github.com/spandl/DSCV-Public" target="_blank">https://github.com/spandl/DSCV-Public</a></p>
+</aside>
+<h2 is-upgraded><strong>Webpack</strong></h2>
+<p>These components use <a href="https://webpack.js.org/" target="_blank">webpack</a> and come with two commands:</p>
+<ul>
+<li><code>npm run dev</code></li>
+<li><code>npm run build</code></li>
+</ul>
+<p>The  <code>npm run dev</code> command starts the webpack server for local development. The <code>npm run build command</code> generates the files that you need to upload <a href="https://developers.google.com/datastudio/visualization/upload-viz" target="_blank">to your cloud environment </a>to deploy your visualization.</p>
+<h2 is-upgraded><strong>Files</strong></h2>
+<p>Let&#39;s take a look at the files you just downloaded:</p>
+<ul>
+<li><strong><code>getData/</code></strong><br>contains the helper component source</li>
+<li><strong><code>js/</code></strong> <br>contains helper JavaScript files</li>
+<li><strong><code>sunburst/</code></strong> <br>contains sunburst component source</li>
+<li><strong><code>views/</code></strong> <br>contains pug files that will render the HTML development environment. These files are not required for deployment to Data Studio.</li>
+<li><strong><code>dist/</code></strong> <br>is generated once you build your files. Contains both components: these files must be uploaded to your cloud bucket</li>
+</ul>
+<p>This is the file structure of the sunburst-drilldown/ directory</p>
+<pre><code>├── README.md
+├── getdata
+│   ├── data
+│   │   ├── DS-data-empty.json
+│   │   └── DS-data.json
+│   ├── getdata.js
+│   ├── settings
+│   │   ├── getdata.json
+│   │   └── manifest.json
+│   └── src
+├── js
+│   ├── d3-common.js
+│   └── messages.js
+├── package-lock.json
+├── package.json
+├── sunburst
+│   ├── data
+│   │   └── DS-data-documentation.json
+│   ├── settings
+│   │   ├── manifest.json
+│   │   └── sunburst.json
+│   ├── src
+│   └── sunburst.js
+├── views
+└── webpack.config.js</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="getdata — Create sample datasets for local development" duration="10">
+        <p>The purpose of the <strong>getdata</strong> component is to create multiple sample datasets with Data Studio to use in local development.</p>
+<p>Having these datasets locally reduces development time and the likelihood of errors when you upload your component to Data Studio. These datasets make it easier to test requirements of different datasets.</p>
+<h2 is-upgraded><strong>Run the component locally</strong></h2>
+<p>Before deploying the component to Data Studio, run the component locally. To run the component, type the following command in your terminal:</p>
+<pre><code>npm run dev</code></pre>
+<p>Open the following page in a browser:</p>
+<p><a href="http://localhost:8080/getdata/index.html" target="_blank">http://localhost:8080/getdata/index.html</a></p>
+<p>You should see:</p>
+<p class="image-container"><img style="width: 271.00px" src="img/643baa8b810048b4.png"></p>
+<ol type="1" start="1">
+<li>Click on the download button. You will be prompted with a download window</li>
+<li>Save the file as a <strong><em>json</em></strong> file (by making sure it has the extension &#34;<em>.json</em>&#34;) in <code>sunburst/data/</code></li>
+</ol>
+<h2 is-upgraded><strong>The data file</strong></h2>
+<p>Use a text editor to open the downloaded file. You should see the following JSON:</p>
+<p class="image-container"><img style="width: 624.00px" src="img/11751a3e3b604d12.png"></p>
+<p>The sample data follows the <a href="https://developers.google.com/datastudio/visualization/library-reference#data" target="_blank">object format Data Studio provides</a>.</p>
+<p>The JSON contains 5 keys:</p>
+<ul>
+<li><code>tables</code></li>
+<li><code>fields</code></li>
+<li><code>styles</code></li>
+<li><code>theme</code></li>
+<li><code>interactions</code></li>
+</ul>
+<p>This json file allows you to run the sunburst component in your local environment. </p>
+<p>In the next section, we will briefly discuss the code included with this component.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="getdata — code files" duration="3">
+        <p>Open the <code>getdata/</code> folder:</p>
+<pre><code>├── getdata
+│   ├── data
+│   │   ├── DS-data-empty.json
+│   │   └── DS-data.json
+│   ├── getdata.js
+│   ├── settings
+│   │   ├── getdata.json
+│   │   └── manifest.json
+│   └── src
+│       └── getdata.scss</code></pre>
+<p>You will see the following:</p>
+<ul>
+<li><code>data/</code><br>Sample datasets for demonstration purposes</li>
+<li><code>settings/</code> <br>contains <a href="https://codelabs.developers.google.com/codelabs/community-visualization/#8" target="_blank">the manifest.json file</a> and the <a href="https://codelabs.developers.google.com/codelabs/community-visualization/#6" target="_blank">config file</a>.</li>
+<li><code>getdata.js</code> <br>source code of the component</li>
+</ul>
+<h2 is-upgraded><strong>Manifest</strong></h2>
+<aside class="warning"><p>Before you deploy this component to your bucket, make sure the manifest.json is updated with your bucket information. Look in the Google Cloud Storage UI to find your bucket location. Do not use the bucket path provided here.</p>
+<p class="image-container"><img style="width: 610.00px" src="img/672c7196c710a169.jpeg"></p>
+</aside>
+<h2 is-upgraded><strong>Configuration file</strong></h2>
+<p>For this exercise, do not change the config file.</p>
+<h2 is-upgraded><strong>The code</strong></h2>
+<p>Feel free to review the component source code. </p>
+<h2 is-upgraded><strong>Build and deploy your code</strong></h2>
+<ol type="1" start="1">
+<li>In a terminal, run: <code>npm run build</code></li>
+<li><a href="https://developers.google.com/datastudio/visualization/upload-viz" target="_blank">Deploy the contents</a> of <code>dist/getdata</code> to your Google Cloud Storage bucket.</li>
+</ol>
+<aside class="special"><p>Note: if you develop different components, you will need to change the configuration. The <strong>getdata </strong>config file must be the same as the config file as you create for your component. You can actually use the same GCS location for both config files. For example:</p>
+<p><code>&#34;config&#34;: &#34;gs://**YourComponentFolder**/**config**.json&#34;,</code></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Obtaining sample data" duration="15">
+        <p>Once you have deployed the <strong>getdata</strong> component, add it to a <a href="https://developers.google.com/datastudio/visualization/load-viz" target="_blank">Data Studio report</a>.</p>
+<h2 is-upgraded><strong>Configuration</strong></h2>
+<h3 is-upgraded><strong>Data</strong></h3>
+<p>In the data section of the property panel, add the dimension(s) and metric you&#39;d like to visualize with your sunburst.  For example: use the Google Analytics sample data source and add <em>Continent</em> and <em>Country</em> to &#34;Dimension&#34; and <em>Pages / Session</em> under &#34;Metric&#34;</p>
+<p>The <strong>getdata</strong> component will show you the number of records in the returned data.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e8db9ffa5892a34e.png"> </p>
+<h3 is-upgraded><strong>Style</strong></h3>
+<p>Make style selections in the property panel. For this component, select a title color, check the &#34;Show Legend&#34; checkbox, and choose a color scheme for the visualization.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/b71cb2ce1f6b09e3.png"></p>
+<p>Once you are done, switch to view mode. Click the <code>download</code> button from the displayed component and save the file as <code>DS-data-documentation.json</code> in the <code>sunburst/data/</code> folder.</p>
+<p>Once you have downloaded the data, switch back to edit mode, change your data and style selections, and download data files until you have covered enough edge cases.</p>
+<p>You are now ready to test the <strong>sunburst</strong> component locally.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Sunburst Diagram - File Structure" duration="2">
+        <p>The file structure of the sunburst diagram is similar to the <strong>getdata </strong>component. There is one additional folder: <code>src/.</code> This folder contains the d3.js code for the diagram, as well as a SASS (CSS) styling file. </p>
+<p>The code for the sunburst is provided without explanation, because the focus of this codelab is the local development workflow. </p>
+<p>In the next step, we&#39;ll discuss the <code>sunburst.js</code> code, which is the bridge between the d3.js library and Data Studio.</p>
+<pre><code>├── sunburst
+│   ├── data
+│   │   └── DS-data-documentation.json
+│   ├── settings
+│   │   ├── manifest.json
+│   │   └── sunburst.json
+│   ├── src
+│   │   ├── d3-sunburst.scss
+│   │   ├── sunburst-data.js
+│   │   ├── sunburst-dimensions.js
+│   │   ├── sunburst-drawBase.js
+│   │   ├── sunburst-drawContent.js
+│   │   ├── sunburst-filter.js
+│   │   ├── sunburst-legend.js
+│   │   └── sunburst-obj.js
+│   └── sunburst.js</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Sunburst Diagram - The code" duration="15">
+        <p>In this section we will go through the code in <code>sunburst.js</code>. </p>
+<h2 is-upgraded><strong>Local or production?</strong></h2>
+<p>The two differences between rendering the chart in local and production environment are how data is loaded and how exceptions are rendered. </p>
+<p>The code compares the hostname with the value of a variable called &#34;LOCAL&#34;. Depending on this value production or development code is executed. </p>
+<p>You will probably run the local preview using <code>&#34;localhost://&#34;.</code> In that case, no code changes are needed. </p>
+<p class="image-container"><img style="width: 413.00px" src="img/68a9d55761f4e9d3.jpeg"></p>
+<p>If you are using 127.0.0.1 or any other domain name, please change the value of the LOCAL constant in the beginning of the script</p>
+<p><code>const LOCAL = &#34;localhost&#34;;</code></p>
+<h3 is-upgraded><strong>1 - Loading data</strong></h3>
+<p>When developing locally, the component will try to load the dataset that we just downloaded with our <strong>getdata</strong> component. In production, it will use the <a href="https://github.com/googledatastudio/ds-component" target="_blank">ds-component</a> library and subscribe to the data.</p>
+<aside class="special"><p><a href="https://github.com/googledatastudio/experimental-visualizations/tree/master/viz/sunburst-drilldown" target="_blank">See Github for source code.</a></p>
+</aside>
+<h3 is-upgraded><strong>sunburst.js</strong></h3>
+<pre><code>async function sunburst() {
+    if (window.location.hostname == LOCAL) {
+        const theDataSet = await d3.json(&#34;./data/DS-data.json&#34;);
+        draw(theDataSet);
+    } else {
+        dscc.subscribeToData(draw, { transform: dscc.objectTransform });
+    }
+}</code></pre>
+<h3 is-upgraded>2 - Draw Visualization</h3>
+<p>There is one more difference between the local and the development code. In production, the component uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank">try/catch</a> to render error messages. During local development, the component sends error messages to the console.</p>
+<pre><code>function draw(data) {
+    if (LOCAL) {
+        drawViz(data);
+    } else {
+        try {
+            drawViz(data);
+        } catch (err) {
+            renderErrorMessage(msg.errorTitle, `${msg.generalError} ${err}`);
+        }
+    }
+}</code></pre>
+<h2 is-upgraded><strong>Data Conversion</strong></h2>
+<p>The d3 library expects the data as an array of objects, with dimensions and metrics combined. The order of the elements does not matter.</p>
+<p>Format expected by D3.js:</p>
+<pre><code>[
+        {
+            &#34;Continent&#34;: &#34;Americas&#34;,
+            &#34;Country&#34;: &#34;Grenada&#34;,
+            &#34;Pages / Session&#34;: 44
+        },
+        {
+            &#34;Continent&#34;: &#34;Europe&#34;,
+            &#34;Country&#34;: &#34;Albania&#34;,
+            &#34;Pages / Session&#34;: 21.4
+        },
+        {
+            &#34;Continent&#34;: &#34;Americas&#34;,
+            &#34;Country&#34;: &#34;Barbados&#34;,
+            &#34;Pages / Session&#34;: 18.66
+        }
+]</code></pre>
+<p>Object Format returned by Data Studio:</p>
+<pre><code>&#34;DEFAULT&#34;: [
+    { 
+        &#34;dimension&#34;: [&#34;Americas&#34;, &#34;Grenada&#34;], 
+        &#34;metric&#34;: [44] },
+    { 
+        &#34;dimension&#34;: [&#34;Europe&#34;, &#34;Albania&#34;], 
+        &#34;metric&#34;: [21.4] },
+    { 
+        &#34;dimension&#34;: [&#34;Americas&#34;, &#34;Barbados&#34;], 
+        &#34;metric&#34;: [18.66]
+    }
+]</code></pre>
+<p>To convert the data, we use the function <code>convertData</code>..</p>
+<aside class="special"><p>There are many other ways to convert the data. You may also write your visualization code to to work with the Data Studio data format.</p>
+</aside>
+<p>The <code>convertData</code> function does two other things:</p>
+<ol type="1" start="1">
+<li>Checks for the existence of data</li>
+<li>Combines all fields into a single array</li>
+</ol>
+<h3 is-upgraded><strong>Data Check</strong></h3>
+<p>Data Studio initially runs the script twice, first without any data, and then a second time with data.</p>
+<p>In this example, the script only converts the data if it exists, and otherwise displays a message that the data is loading. If you pass an empty dataset to d3, it throws an exception and the user sees a system error message. </p>
+<aside class="warning"><p>This error can only be observed in a Data Studio report: Open the browser console, and refresh a report containing your component. </p>
+<p class="image-container"><img style="width: 368.00px" src="img/95a411733056adda.jpeg"></p>
+</aside>
+<h2 is-upgraded><strong>Prepare the DOM</strong></h2>
+<p>Data Studio renders custom components in the HTML <code>body</code> of an iFrame.</p>
+<p>D3.js requires the id of the DOM object it selects. The prepareDOM() function ensures that the id of the body tag is set to &#34;body&#34;.</p>
+<pre><code>const root = d3.select(&#34;body&#34;).attr(&#34;id&#34;, &#34;body&#34;);</code></pre>
+<p>The function also deletes all svg tags to avoid having multiple svg elements in the viz. </p>
+<p><a href="https://stackoverflow.com/questions/58210391/datastudio-how-to-remove-the-canvas-when-the-data-change/58225118" target="_blank">If the svg elements are not removed, new elements will be <strong>added</strong> with any resize event.</a></p>
+<pre><code>d3.select(&#34;body&#34;)
+        .selectAll(&#34;svg&#34;)
+        .remove();</code></pre>
+<p>Finally we must remove the tooltip and error messages for the same reason.</p>
+<pre><code>d3.select(&#34;#error&#34;).remove();
+d3.select(&#34;#tooltip&#34;).remove();</code></pre>
+<aside class="special"><p>You can also use vanilla JavaScript for DOM manipulation. </p>
+</aside>
+<h2 is-upgraded><strong>Tooltip</strong></h2>
+<p>D3.js expects the HTML elements for the tooltips to exist. In a website, we could simply create it in the HTML. However, because Data Studio does not give you direct access to the iframe DOM, we use d3.js.</p>
+<pre><code>function createTooltip(root) {
+    const tooltip = root
+        .append(&#34;div&#34;)
+        .attr(&#34;id&#34;, &#34;tooltip&#34;)
+        .attr(&#34;class&#34;, &#34;tooltip&#34;);
+
+    tooltip.append(&#34;span&#34;).attr(&#34;id&#34;, &#34;title&#34;);
+    tooltip.append(&#34;span&#34;).attr(&#34;id&#34;, &#34;count&#34;);
+}</code></pre>
+<h2 is-upgraded><strong>Creating the Sunburst object</strong></h2>
+<p>You are almost ready to call our viz object with the <code>function drawViz(rawData)</code></p>
+<p>One last thing: Check if the chart area is big enough for your visualization. If not, display some kind of message.</p>
+<p><code>getWidth()</code> and <code>getHeight()</code> from the ds-component library does not work in the local setup. To check the chart area, I use my own script imported from  <code>/js/d3-common.js</code>.</p>
+<p>If <code>convertData</code> returns a data object, you can call</p>
+<pre><code>new Sunburst(id, data);</code></pre>
+<ul>
+<li><code>id</code> : The ID of the HTML tag where the viz should be created (in this case, &#34;#body&#34;)</li>
+<li><code>data</code>: the data object. </li>
+</ul>
+<p>Once a new sunburst object is created, we need to set properties of the object. For this visualization, the properties include:</p>
+<ul>
+<li>One metric</li>
+<li>An array of all dimensions</li>
+<li>Color style selection</li>
+<li>A boolean if the colors should be reversed</li>
+<li>And finally a  boolean if the legend should be rendered</li>
+</ul>
+<pre><code>// Dimensions and Metric of viz
+sunburst.metricAccessor = rawData.fields.metric[0].name;
+sunburst.dimensionsAccessor = [];
+rawData.fields.dimension.forEach((d, i) =&gt; {
+    sunburst.dimensionsAccessor[i] = d.name;
+});
+
+// Color Scheme
+sunburst.colorScheme = rawData.style.arcColors.value;
+sunburst.colorSchemeReversed = rawData.style.colorSchemeReversed.value;
+
+// Font Color
+sunburst.fontColor = rawData.style.fontColor.value.color;
+sunburst.fontOpacity = rawData.style.fontColor.value.opacity;
+
+// Draw Legend
+sunburst.legend = rawData.style.isLegend.value;
+
+</code></pre>
+<p>Once all properties are set, this function renders the viz:</p>
+<pre><code>sunburst.draw();</code></pre>
+<h2 is-upgraded><strong>Filter</strong></h2>
+<p>Filter interactions are not covered in this codelab.</p>
+<h2 is-upgraded><strong>Error handling</strong></h2>
+<p>This visualization provides some error handling for common cases. Error messages are defined in  the js/ folder.</p>
+<p>The error messages also display an icon. The icon must be defined as a svg, <a href="https://developers.google.com/datastudio/visualization/issues" target="_blank">because external images are blocked by the Community Visualizations CSP.</a> To learn more, look at <code>js/messages.js</code> and the <code>renderErrorMessage</code> function in <code>js/d3-common.js.</code></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Test locally and deploy" duration="5">
+        <h2 is-upgraded><strong>Test locally</strong></h2>
+<p>In your terminal, run:</p>
+<p><code>npm run dev</code></p>
+<p>Open your browser and navigate to:</p>
+<p><a href="http://localhost:8080/sunburst/index.html" target="_blank"><code>http://localhost:8080/sunburst/index.html</code></a></p>
+<p>You should see the sunburst diagram</p>
+<p class="image-container"><img style="width: 624.85px" src="img/77c8dfd2595731c.jpeg"></p>
+<h2 is-upgraded><strong>Deployment</strong></h2>
+<p>If you are satisfied with the visualization, run:</p>
+<p><code>npm run build</code></p>
+<p>Then, <a href="https://developers.google.com/datastudio/visualization/upload-viz" target="_blank">deploy the the files from your <code>dist/sunburst/</code> folder to your own bucket</a>. </p>
+<aside class="warning"><p>Don&#39;t forget to update the js, config, and CSS file locations  in the <code>manifest.json</code> file</p>
+</aside>
+<p>If all files are uploaded and set to public, and the <code>manifest.json</code> file is correctly configured, <a href="https://developers.google.com/datastudio/visualization/load-viz" target="_blank">add your new component to a Data Studio report</a>. You can select dimensions, metrics and style options.</p>
+<p>The final result should look like this:</p>
+<p class="image-container"><img style="width: 624.00px" src="img/a9719d177372aca2.jpeg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Et voilà" duration="5">
+        <p>Now, you should be able to develop your own data visualizations locally and deploy them to Data Studio.</p>
+<aside class="special"><p>You might also <a href="https://github.com/googledatastudio/dscc-gen" target="_blank">check out the Data Studio Developer Tooling</a>. </p>
+</aside>
+<h2 is-upgraded>Next steps<strong>?</strong></h2>
+<ul>
+<li><a href="https://developers.google.com/datastudio/visualization/interactions-guide" target="_blank">Find out more about using your viz as a filter </a></li>
+<li><a href="https://observablehq.com/collection/@observablehq/visualization" target="_blank">Browse through d3.js examples in <em>ObservableHQ</em> and bring them into Data Studio</a></li>
+<li>Check out <a href="https://www.slant.co/options/10577/alternatives/~d3-js-alternatives" target="_blank">other JavaScript visualization libraries</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
